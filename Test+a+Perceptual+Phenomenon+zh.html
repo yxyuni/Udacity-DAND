@@ -11839,9 +11839,9 @@ $X_2\sim N(\mu_c,\sigma^2)$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$H_0: \mu_{c} - \mu_{in} = 0$</p>
-<p>$H_A: \mu_{c} - \mu_{in} \neq 0$</p>
-<p>检验类型：独立样本t-检验（Independent Samples t-test）。</p>
+<p>$H_0: \mu_{c} - \mu_{in} = 0$ 被试看到颜色与文字一致时说出同等大小的列表中的墨色名称的平均时间与不一致时没有差别</p>
+<p>$H_A: \mu_{c} - \mu_{in} \neq 0$ 被试看到颜色与文字一致时说出同等大小的列表中的墨色名称的平均时间与不一致时存在差别</p>
+<p>检验类型：独立配对样本t-检验（Independent Paired-Samples t-test）。</p>
 <p>理由：
 1.自变量与因变量为独立变量。这是因为一致性条件与反应时间是两种不同的物理量。
 2.因变量连续。被试说出相同大小列表的时间是连续的。
@@ -11897,10 +11897,19 @@ $X_2\sim N(\mu_c,\sigma^2)$</p>
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;stroop.csv&#39;</span><span class="p">)</span>
 <span class="n">df_c</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Congruent&#39;</span><span class="p">]</span>
 <span class="n">df_in</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Incongruent&#39;</span><span class="p">]</span>
-<span class="k">print</span><span class="p">(</span><span class="n">df_c</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
-<span class="k">print</span><span class="p">(</span><span class="n">df_in</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">df_c</span> <span class="o">-</span> <span class="n">df_in</span>
-<span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df_c</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -11913,10 +11922,12 @@ $X_2\sim N(\mu_c,\sigma^2)$</p>
 
 <div class="output_area">
 
-<div class="prompt"></div>
+<div class="prompt output_prompt">Out[3]:</div>
 
 
-<div class="output_subarea output_stream output_stdout output_text">
+
+
+<div class="output_text output_subarea output_execute_result">
 <pre>count    24.000000
 mean     14.051125
 std       3.559358
@@ -11925,8 +11936,40 @@ min       8.630000
 50%      14.356500
 75%      16.200750
 max      22.328000
-Name: Congruent, dtype: float64
-count    24.000000
+Name: Congruent, dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df_in</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>count    24.000000
 mean     22.015917
 std       4.797057
 min      15.687000
@@ -11934,8 +11977,41 @@ min      15.687000
 50%      21.017500
 75%      24.051500
 max      35.255000
-Name: Incongruent, dtype: float64
-count    24.000000
+Name: Incongruent, dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">df_c</span> <span class="o">-</span> <span class="n">df_in</span>
+<span class="n">d</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>count    24.000000
 mean     -7.964792
 std       4.864827
 min     -21.919000
@@ -11943,9 +12019,9 @@ min     -21.919000
 50%      -7.666500
 75%      -3.645500
 max      -1.950000
-dtype: float64
-</pre>
+dtype: float64</pre>
 </div>
+
 </div>
 
 </div>
@@ -11976,7 +12052,7 @@ dtype: float64
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
@@ -12054,7 +12130,7 @@ dtype: float64
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">24</span>
@@ -12096,7 +12172,7 @@ dtype: float64
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>置信水平：99%</p>
-<p>关键统计值$t_{crit}$：2.81(双边)</p>
+<p>关键统计值$t_{crit}$：2.807 (双边)</p>
 <p>${SE_d} = 0.99, t = \frac{\bar{d}}{SE_d} = \frac{-7.96}{0.99} = -8.02$</p>
 <p>$|t| &gt; |t_{crit}|$ 所以拒斥$H_0$</p>
 <p>结论：被试看到颜色与文字一致时的平均反应时间显著低于二者不一致时的反应时间</p>
