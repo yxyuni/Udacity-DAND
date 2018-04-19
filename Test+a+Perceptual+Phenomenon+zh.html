@@ -11789,8 +11789,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>自变量：颜色和文字一致或不一致</p>
-<p>因变量：被试的反应时间</p>
+<p>自变量：颜色和文字一致的条件或不一致的条件</p>
+<p>因变量：被试说出同等大小的列表中的墨色名称的时间</p>
 
 </div>
 </div>
@@ -11808,8 +11808,29 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$\mu_c$:被试看到颜色与文字一致时的平均反应时间</p>
-<p>$\mu_{in}$:被试看到颜色与文字不一致时的平均反应时间</p>
+<p>$X_1$:被试看到颜色与文字一致时说出同等大小的列表中的墨色名称的时间</p>
+<p>$X_2$:被试看到颜色与文字不一致时说出同等大小的列表中的墨色名称的时间</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$\mu_c$:被试看到颜色与文字一致时说出同等大小的列表中的墨色名称的时间的总体均值</p>
+<p>$\mu_{in}$:被试看到颜色与文字不一致时说出同等大小的列表中的墨色名称的时间的总体均值</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>这里假定受试者之间没有互相影响，且每次念出相同长度的列表中墨色的反应时间服从正态分布，且具有相同的方差$\sigma^2$, 即：</p>
+<p>$X_1\sim N(\mu_c,\sigma^2)$,
+$X_2\sim N(\mu_c,\sigma^2)$</p>
 
 </div>
 </div>
@@ -11820,8 +11841,25 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$H_0: \mu_{c} - \mu_{in} = 0$</p>
 <p>$H_A: \mu_{c} - \mu_{in} \neq 0$</p>
-<p>检验类型：（双总体）t-检验</p>
-<p>理由：样本量不大(&lt;30)，不宜采用z-检验；可以计算样本的均值和标准差；双总体t检验（paired-samples t test）可以用来判定两组样本是否一致。</p>
+<p>检验类型：独立样本t-检验（Independent Samples t-test）。</p>
+<p>理由：
+1.自变量与因变量为独立变量。这是因为一致性条件与反应时间是两种不同的物理量。
+2.因变量连续。被试说出相同大小列表的时间是连续的。
+3.成对的因变量相对独立。这是因为每次被试念出颜色的实验之间是独立的。
+4.因变量可以假设服从正态分布。</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>参考链接：</p>
+<ol>
+<li><a href="https://github.com/ShiChJ/DAND-Basic-Materials/blob/master/P1/%E7%8B%AC%E7%AB%8B%E5%92%8C%E7%9B%B8%E4%BE%9D%E6%A0%B7%E6%9C%AC%E5%8C%BA%E5%88%AB.pdf">独立和相依样本区别</a></li>
+<li><a href="https://support.minitab.com/zh-cn/minitab/18/help-and-how-to/statistics/basic-statistics/supporting-topics/tests-of-means/how-are-dependent-and-independent-samples-different/">相关样本和独立样本有何不同</a></li>
+</ol>
 
 </div>
 </div>
@@ -11835,6 +11873,84 @@ div#notebook {
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;stroop.csv&#39;</span><span class="p">)</span>
+<span class="n">df_c</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Congruent&#39;</span><span class="p">]</span>
+<span class="n">df_in</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Incongruent&#39;</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df_c</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">df_in</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">df_c</span> <span class="o">-</span> <span class="n">df_in</span>
+<span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>count    24.000000
+mean     14.051125
+std       3.559358
+min       8.630000
+25%      11.895250
+50%      14.356500
+75%      16.200750
+max      22.328000
+Name: Congruent, dtype: float64
+count    24.000000
+mean     22.015917
+std       4.797057
+min      15.687000
+25%      18.716750
+50%      21.017500
+75%      24.051500
+max      35.255000
+Name: Incongruent, dtype: float64
+count    24.000000
+mean     -7.964792
+std       4.864827
+min     -21.919000
+25%     -10.258500
+50%      -7.666500
+75%      -3.645500
+max      -1.950000
+dtype: float64
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -11854,6 +11970,57 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>(4) 提供显示样本数据分布的一个或两个可视化。用一两句话说明你从图中观察到的结果。</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">df_c</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;$congrent$&#39;</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">df_in</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;$incongrent$&#39;</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;$difference$&#39;</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>下图为Excel作出：</p>
 
 </div>
 </div>
@@ -11885,13 +12052,52 @@ div#notebook {
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">24</span>
+<span class="n">d_2</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">])</span>
+<span class="n">S</span> <span class="o">=</span> <span class="p">((</span><span class="n">d_2</span> <span class="o">-</span> <span class="n">d</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span>
+<span class="n">SE</span> <span class="o">=</span> <span class="n">S</span> <span class="o">/</span> <span class="n">n</span> <span class="o">**</span> <span class="mf">0.5</span>
+<span class="c1"># SE = d.std() / n ** 0.5</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">/</span> <span class="n">SE</span>
+<span class="k">print</span><span class="p">(</span><span class="n">SE</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.993028634778
+-8.02070694411
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>置信水平$\alpha$：0.01</p>
+<p>置信水平：99%</p>
 <p>关键统计值$t_{crit}$：2.81(双边)</p>
-<p>${SE_d} = 1.93, t = \frac{\bar{d}}{SE_d} = \frac{-7.96}{1.93} = -4.11$</p>
+<p>${SE_d} = 0.99, t = \frac{\bar{d}}{SE_d} = \frac{-7.96}{0.99} = -8.02$</p>
 <p>$|t| &gt; |t_{crit}|$ 所以拒斥$H_0$</p>
 <p>结论：被试看到颜色与文字一致时的平均反应时间显著低于二者不一致时的反应时间</p>
 <p>与期望一致</p>
